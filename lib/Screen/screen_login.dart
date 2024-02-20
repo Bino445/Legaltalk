@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:futer/Screen/register.dart';
 
 class Screen_login extends StatefulWidget {
   const Screen_login({super.key});
@@ -12,9 +13,6 @@ class _Screen_loginState extends State<Screen_login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFfbfbfb),
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20.0),
@@ -37,6 +35,23 @@ class _Screen_loginState extends State<Screen_login> {
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ScreenRegister(),
+                    ),
+                  );
+                },
+                child: Hero(
+                  tag: 'hero',
+                  child: Text(
+                    "ยังไม่ได้เป็นสมาชิกใช่ไหม? สมัครเลยตอนนี้",
+                    style: TextStyle(color: Color(0xFF1C243C)),
+                  ),
                 ),
               ),
               SizedBox(
