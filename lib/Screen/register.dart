@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:legaltalk/Screen/screen_main.dart';
 import '../firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //เหลือทำให้กดปุ่มแล้วหน้าอื่น+หน้านโยบาย
@@ -20,8 +21,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
   final TextEditingController Email = TextEditingController();
   final TextEditingController Password = TextEditingController();
   final TextEditingController CF_Password = TextEditingController();
-  final CollectionReference schedules = FirebaseFirestore.instance.collection(
-      'schedules');
+  final CollectionReference User = FirebaseFirestore.instance.collection('User');
 
   Future<void> _save([DocumentSnapshot? documentSnapshot]) async {
     try {
@@ -30,7 +30,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
         "Email": Email.text,
         "Password": Password.text,
       };
-      await schedules.add(data);
+      await User.add(data);
 
       // ล้างข้อมูลในฟอร์ม
       Username.clear();
@@ -275,6 +275,11 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                             saveData();
                             validateCheckbox();
                             _save();
+                            Navigator.push(context,MaterialPageRoute(
+                                builder: (context){
+                                  return MainScreen();
+                                })
+                            );
                           },
                           child: Text("สมัครสมาชิก",
                             style: TextStyle(color: Colors.white),)
