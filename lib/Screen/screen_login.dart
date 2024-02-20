@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:futer/Screen/register.dart';
+import 'package:futer/Screen/screen_main.dart';
 
 class Screen_login extends StatefulWidget {
   const Screen_login({super.key});
@@ -30,7 +31,6 @@ class _Screen_loginState extends State<Screen_login> {
                   labelText: 'Username',
                 ),
               ),
-              SizedBox(height: 10.0),
               TextField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -55,7 +55,11 @@ class _Screen_loginState extends State<Screen_login> {
                 ),
               ),
               SizedBox(
-                child: ElevatedButton.icon(onPressed: (){}, icon: Icon(Icons.login), label: Text("เข้าสู่ระบบ",style: TextStyle(fontSize: 20))),
+                child: ElevatedButton.icon(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return MainScreen();
+                  }));
+                }, icon: Icon(Icons.login), label: Text("เข้าสู่ระบบ",style: TextStyle(fontSize: 20))),
               ),
             ],
           ),
