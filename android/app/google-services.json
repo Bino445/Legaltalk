@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1060926168234",
+    "project_id": "legaltalk-b9d26",
+    "storage_bucket": "legaltalk-b9d26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060926168234:android:6407a16e8a6b67045ec4d3",
+        "android_client_info": {
+          "package_name": "com.example.futer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIOq31NeWMlnj36VO4vFQOQHoE9tXqs_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060926168234:android:f1d147a2a9995ac25ec4d3",
+        "android_client_info": {
+          "package_name": "com.example.legaltalk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIOq31NeWMlnj36VO4vFQOQHoE9tXqs_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

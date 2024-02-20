@@ -36,6 +36,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
       Username.clear();
       Email.clear();
       Password.clear();
+      CF_Password.clear();
 
     } catch (e) {
       print('เกิดข้อผิดพลาดในการสร้างหรืออัปเดตเอกสาร: $e');
@@ -275,11 +276,11 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                             saveData();
                             validateCheckbox();
                             _save();
-                            Navigator.push(context,MaterialPageRoute(
+                            /*Navigator.push(context,MaterialPageRoute(
                                 builder: (context){
                                   return MainScreen();
                                 })
-                            );
+                            );*/
                           },
                           child: Text("สมัครสมาชิก",
                             style: TextStyle(color: Colors.white),)
