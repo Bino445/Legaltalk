@@ -19,30 +19,32 @@ class _Screen_loginState extends State<Screen_login> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController Username = TextEditingController();
   final TextEditingController Password = TextEditingController();
+  bool passwordVisible = false;
 
 
+  void initState() {
+    super.initState();
+    passwordVisible = true;
+
+  } //password visible
   void checkUsernameAndPassword() async {
     await Firebase.initializeApp();
 
     final firestore = FirebaseFirestore.instance;
+    final Users = Username.text;
+    final Pass = Password.text;
 
+    //Stream<QuerySnapshot> snapshots = firestore.collection('User').where('User', isEqualTo: Users).snapshots();
     Stream<QuerySnapshot> snapshots = firestore.collection('User').snapshots();
 
     snapshots.listen((snapshot) {
       for (var doc in snapshot.docs) {
-        if (doc['User'] == Username && doc['Password'] == Password) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (
+        if (doc['User'.toString()] == Users && doc['Password'].toString() == Pass) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (
               context)
           {
             return MainScreen();
           }));
-        }else {
-          Text(
-            'กรุณากรอกรหัสผ่านให้ถูกต้อง',
-            style: TextStyle(color: Colors.red),
-            textAlign: TextAlign.center,
-          );
-
         }
       }
     });
@@ -74,11 +76,22 @@ class _Screen_loginState extends State<Screen_login> {
                   ),
                 ),
                 TextFormField(
-                  obscureText: true,
+                  obscureText: passwordVisible,
                   controller: Password,
                   decoration: InputDecoration(
                     labelText: 'Password',
+                    suffixIcon: IconButton(
+                    icon: Icon(passwordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        passwordVisible = !passwordVisible;
+                      });
+                    }
                   ),
+
+                ),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -100,6 +113,7 @@ class _Screen_loginState extends State<Screen_login> {
                 SizedBox(
                   child: ElevatedButton.icon(onPressed: () {
                     checkUsernameAndPassword();
+
                   },
                       icon: Icon(Icons.login),
                       label: Text(
