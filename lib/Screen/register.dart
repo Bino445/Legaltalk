@@ -57,7 +57,6 @@ class _ScreenRegisterState extends State<ScreenRegister> {
       } //test save data by print
 
       bool passwordVisible = false; // hide password
-
       bool isChecked = false;
       bool isCheckboxError = false;
       // Test Function to handle checkbox validation
@@ -273,9 +272,14 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                                   20) //content padding inside button
                           ),
                           onPressed: () {
-                            saveData();
-                            validateCheckbox();
-                            _save();
+                            if(Password != CF_Password){
+                              Text("รหัสผ่านไม่ตรงกันกรุณากรอกให้ถูกต้อง");
+                            }
+                            else if(Password == CF_Password) {
+                              saveData();
+                              validateCheckbox();
+                              _save();
+                            };
                             /*Navigator.push(context,MaterialPageRoute(
                                 builder: (context){
                                   return MainScreen();
