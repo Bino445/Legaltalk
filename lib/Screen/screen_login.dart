@@ -6,6 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 import '../firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../model/profile.dart';
+
 class Screen_login extends StatefulWidget {
   const Screen_login({super.key});
 
@@ -16,6 +18,7 @@ class Screen_login extends StatefulWidget {
 
 
 class _Screen_loginState extends State<Screen_login> {
+  Profile profile = Profile();
   final formKey = GlobalKey<FormState>();
   final TextEditingController Username = TextEditingController();
   final TextEditingController Password = TextEditingController();
@@ -34,8 +37,8 @@ class _Screen_loginState extends State<Screen_login> {
     final Users = Username.text;
     final Pass = Password.text;
 
-    //Stream<QuerySnapshot> snapshots = firestore.collection('User').where('User', isEqualTo: Users).snapshots();
-    Stream<QuerySnapshot> snapshots = firestore.collection('User').snapshots();
+    Stream<QuerySnapshot> snapshots = firestore.collection('User').where('User', isEqualTo: Users).snapshots();
+    //Stream<QuerySnapshot> snapshots = firestore.collection('User').snapshots();
 
     snapshots.listen((snapshot) {
       for (var doc in snapshot.docs) {
@@ -71,7 +74,6 @@ class _Screen_loginState extends State<Screen_login> {
                   controller: Username,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-
                     labelText: 'Username',
                   ),
                 ),
