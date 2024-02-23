@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:legaltalk/Screen/screen_news.dart';
 import 'package:legaltalk/model/profile.dart';
 
 class Screen_home extends StatefulWidget {
@@ -54,7 +55,7 @@ class _Screen_homeState extends State<Screen_home> {
                   ],
                 ),
               ),
-            ),
+            ),//ตัวหนังสือ "มีอะไรให้ช่วยไหม?"
             Container(
               margin: EdgeInsets.only(top: 10, left: 20, right: 20),
               decoration: BoxDecoration(
@@ -73,6 +74,7 @@ class _Screen_homeState extends State<Screen_home> {
                       hintText: 'ค้นหา',
                       filled: true,
                       fillColor: Colors.white,
+                      suffixIcon: IconButton.outlined(onPressed: (){}, icon: Icon(Icons.search,),disabledColor: Colors.white),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
                         borderSide: BorderSide.none,
@@ -81,7 +83,7 @@ class _Screen_homeState extends State<Screen_home> {
                   ),
                 ],
               ),
-            ),
+            ),//ช่องค้นหา
             Container(
               margin: EdgeInsets.only(top: 30, left: 20, right: 20),
               child: Row(
@@ -92,65 +94,106 @@ class _Screen_homeState extends State<Screen_home> {
                   ),
                 ],
               ),
-            ),
+            ),//หัวข้อ (บริการ)
             Container(
               margin: EdgeInsets.only(top: 10, left: 20, right: 20),
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: Card(
-                      color: Color(0xFF1C243C),
-                      child: Column(
-                        children: [
-                          Text(
-                            "ข่าวสาร",
-                            style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Image.asset('images/Law_book.png', height: 150),
-                          )
-                        ],
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (
+                            context)
+                        {
+                          return Screen_News();
+                        }));
+                      },
+                      child: Card(
+                        color: Color(0xFF1C243C),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              "ข่าวสาร",
+                              style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Image.asset('images/Law_book.png', height: 150),
+                            )
+                          ],
+                        ),
                       ),
                     ),
+
                   ),
                   Expanded(
-                    child: Card(
-                      color: Color(0xFF1C243C),
-                      child: Column(
-                        children: [
-                          Text(
-                            "กระทู้ถามตอบ",
-                            style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Image.asset('images/Content_management.png', height: 150),
-                          )
-                        ],
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (
+                            context)
+                        {
+                          return Screen_News();
+                        }));
+                      },
+                      child: Card(
+                        color: Color(0xFF1C243C),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              "กระทู้ถามตอบ",
+                              style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Image.asset('images/Content_management.png', height: 150),
+                            )
+                          ],
+                        ),
                       ),
                     ),
+
                   ),
                   Expanded(
-                    child: Card(
-                      color: Color(0xFF1C243C),
-                      child: Column(
-                        children: [
-                          Text(
-                            "ข่าวสาร",
-                            style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Image.asset('images/Law_book.png', height: 150),
-                          )
-                        ],
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (
+                            context)
+                        {
+                          return Screen_News();
+                        }));
+                      },
+                      child: Card(
+                        color: Color(0xFF1C243C),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              "ข่าวสาร",
+                              style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Image.asset('images/Law_book.png', height: 150),
+                            )
+                          ],
+                        ),
                       ),
                     ),
+
                   ),
                 ],
               ),
-            )
+            ),//ตัวเลือกหัวข้อบริการ
+            Container(
+              margin: EdgeInsets.only(top: 30, left: 20, right: 20),
+              child: Row(
+                children: [
+                  Text(
+                    "บทความยอดนิยม",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),//หัวข้อ (บริการ)
           ],
         ),
       ),
