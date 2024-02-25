@@ -45,12 +45,12 @@ class _Screen_homeState extends State<Screen_home> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "มีอะไรให้พวกเรา",
-                      style: TextStyle(color: Colors.black, fontSize: 50),
+                      "Welcome to Law",
+                      style: TextStyle(color: Colors.black, fontSize: 40,fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "ช่วยไหม?",
-                      style: TextStyle(color: Colors.black, fontSize: 50),
+                      "Community!",
+                      style: TextStyle(color: Colors.black, fontSize: 40,fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -156,7 +156,7 @@ class _Screen_homeState extends State<Screen_home> {
                   Expanded(
                     child: GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (
                             context)
                         {
                           return Screen_News();
@@ -166,13 +166,17 @@ class _Screen_homeState extends State<Screen_home> {
                         color: Color(0xFF1C243C),
                         child: Column(
                           children: <Widget>[
-                            Text(
-                              "ข่าวสาร",
-                              style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
+                            Center(
+
+                                child: Text(
+                                  "Group chat",
+                                  style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
+                                    textAlign: TextAlign.center
+                                ),
                             ),
                             Padding(
                               padding: EdgeInsets.all(12),
-                              child: Image.asset('images/Law_book.png', height: 150),
+                              child: Image.asset('images/Chatting_online.png', height: 150),
                             )
                           ],
                         ),
@@ -193,7 +197,7 @@ class _Screen_homeState extends State<Screen_home> {
                   ),
                 ],
               ),
-            ),//หัวข้อ (บริการ)
+            ),//หัวข้อ (บทความ)
           ],
         ),
       ),
