@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:legaltalk/Screen/screen_login.dart';
 import 'package:legaltalk/Screen/screen_main.dart';
 import '../firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//เหลือทำให้กดปุ่มแล้วหน้าอื่น+หน้านโยบาย
-
-
 
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({super.key});
@@ -238,7 +236,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                   ],
                 ),
               ),
-              ListTile(
+              /*ListTile(
                 title: Text(
                     'ฉันยอมรับใน "นโยบายความปลอดภัย" รวมถึงเงื่อนไขการใช้งาน'),
                 leading: Checkbox(
@@ -255,33 +253,45 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                   'กรุณากดยอมรับนโยบายความเป็นส่วนตัว และเงื่อนไขการใช้งาน!',
                   style: TextStyle(color: Colors.red),
                   textAlign: TextAlign.center,
-                ),
+                ),*/
+              Padding(padding: const EdgeInsets.only(top: 10)),
               Center(
                   child: SizedBox(
                       height: 50, //height of button
                       width: 200, //width of button
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Color(0xFFD1B06B),
-                              //background color of button
-                              elevation: 3,
-                              //elevation of button
+                              primary: Color(0xFFD1B06B), //background color of button
+                              elevation: 3, //elevation of button
                               shape: RoundedRectangleBorder( //to set border radius to button
                                   borderRadius: BorderRadius.circular(50)
                               ),
-                              padding: EdgeInsets.all(
-                                  20) //content padding inside button
+                              padding: EdgeInsets.all(20) //content padding inside button
                           ),
                           onPressed: () {
-                            saveData();
-                            validateCheckbox();
-                            _save();
+                            if (Username.text == ""|| Password.text == ""|| Email.text == ""|| CF_Password.text == "") {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("กรุณากรอกข้อมูลให้ครบถ้วน", textAlign: TextAlign.center,),
+                                    );
+                                  });
+                            }else {
+                              //saveData();
+                              validateCheckbox();
+                              _save();
+                              Navigator.push(context,MaterialPageRoute(builder: (context){return Screen_login();}));
+                            }
+                            },
+                            //saveData();
+                            //validateCheckbox();
+                            //_save();
                             /*Navigator.push(context,MaterialPageRoute(
                                 builder: (context){
-                                  return MainScreen();
+                                  return MainScreen(); เปลี่ยนเป็นหน้า login
                                 })
                             );*/
-                          },
                           child: Text("สมัครสมาชิก",
                             style: TextStyle(color: Colors.white),)
                       )
