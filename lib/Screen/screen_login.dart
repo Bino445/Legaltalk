@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:legaltalk/Screen/register.dart';
+import 'package:legaltalk/Screen/screen_home.dart';
 import 'package:legaltalk/Screen/screen_main.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../firebase_options.dart';
@@ -18,11 +19,12 @@ class Screen_login extends StatefulWidget {
 
 
 class _Screen_loginState extends State<Screen_login> {
-  Profile profile = Profile();
   final formKey = GlobalKey<FormState>();
+  Profile profile = Profile();
   final TextEditingController Username = TextEditingController();
   final TextEditingController Password = TextEditingController();
   bool passwordVisible = false;
+  String currentUser ="";
 
 
   void initState() {
@@ -32,7 +34,6 @@ class _Screen_loginState extends State<Screen_login> {
   } //password visible
   void checkUsernameAndPassword() async {
     await Firebase.initializeApp();
-
     final firestore = FirebaseFirestore.instance;
     final Users = Username.text;
     final Pass = Password.text;
@@ -42,16 +43,17 @@ class _Screen_loginState extends State<Screen_login> {
 
     snapshots.listen((snapshot) {
       for (var doc in snapshot.docs) {
-        if (doc['User'.toString()] == Users && doc['Password'].toString() == Pass) {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (
-              context)
-          {
-            return MainScreen();
-          }));
+        if (doc['User'.toString()] == Users &&
+            doc['Password'].toString() == Pass) {
+          currentUser = doc['User'.toString()];
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(
+              builder: (context) => MainScreen(currentUser: currentUser)));
+
         }
       }
-    });
-  }
+      });
+        }
 
 
     @override
@@ -74,7 +76,7 @@ class _Screen_loginState extends State<Screen_login> {
                   controller: Username,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                    labelText: 'Username',
+                    hintText: 'ค้นหา',
                   ),
                 ),
                 TextFormField(

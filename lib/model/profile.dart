@@ -1,4 +1,3 @@
-
 class Profile{
     String? Username;
     String? Password;

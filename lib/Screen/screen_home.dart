@@ -3,20 +3,21 @@ import 'package:legaltalk/Screen/screen_news.dart';
 import 'package:legaltalk/model/profile.dart';
 
 class Screen_home extends StatefulWidget {
-  const Screen_home({super.key});
+  final String currentUser;
 
+  const Screen_home({Key? key, required this.currentUser}) : super(key: key);
   @override
   State<Screen_home> createState() => _Screen_homeState();
 }
 
 class _Screen_homeState extends State<Screen_home> {
-  Profile profile = Profile();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("สวัสดี"),
+        title: Text('สวัสดี${widget.currentUser}'),
         leading: Container(
           margin: EdgeInsets.all(10),
           child: Icon(Icons.book),
@@ -182,7 +183,6 @@ class _Screen_homeState extends State<Screen_home> {
                         ),
                       ),
                     ),
-
                   ),
                 ],
               ),

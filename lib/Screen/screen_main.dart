@@ -3,20 +3,28 @@ import 'package:legaltalk/Screen/screen_chat.dart';
 import 'package:legaltalk/Screen/screen_home.dart';
 import 'package:legaltalk/Screen/screen_news.dart';
 import 'package:legaltalk/Screen/screen_post.dart';
+import 'package:legaltalk/model/profile.dart';
 
 
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
+  final String currentUser;
+  const MainScreen({super.key, required this.currentUser});
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late String currentUse;
   int MyCurrentIndex = 0;
-  List pages = [Screen_home(),Screen_News(),Screen_Posts(),Screen_chat()];
+  late List pages;
 
+  @override
+  void initState() {
+    super.initState();
+    currentUse = widget.currentUser;
+    pages = [Screen_home(currentUser: currentUse), Screen_News(), Screen_Posts(), Screen_chat(currentUser: currentUse)];
+  }
   @override
   Widget build(BuildContext context) {
     Widget MyNavBar = BottomNavigationBar(
