@@ -125,7 +125,6 @@ class _Screen_homeState extends State<Screen_home> {
                         ),
                       ),
                     ),
-
                   ),
                   Expanded(
                     child: GestureDetector(
