@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:legaltalk/model/profile.dart';
+import '../service/database_service.dart';
 import '../service/firebase_ListGroupChat.dart';
 import 'chat/group_chat.dart';
 class Screen_chat extends StatefulWidget {
@@ -11,33 +13,18 @@ class Screen_chat extends StatefulWidget {
 }
 
 class _Screen_chatState extends State<Screen_chat> {
+  final firestore = FirebaseFirestore.instance;
   final TextEditingController groupName = TextEditingController();
   final CollectionReference groups = FirebaseFirestore.instance.collection('groups');
+  final CollectionReference User = FirebaseFirestore.instance.collection('User');
   late String admin;
   @override
   void initState() {
     super.initState();
     admin = widget.currentUser;
-  }
-  Future<void> _save([DocumentSnapshot? documentSnapshot]) async {
-    try {
-      final Map<String, dynamic> data = {
-        "admin": admin,
-        "groupName": groupName.text,
-        "groupPic": "",
-        "members": [],
-        "recentMessage":"",
-        "recentMessageSender": "",
-      };
-      await groups.add(data);
 
-      // ล้างข้อมูลในฟอร์ม
-      groupName.clear();
-
-    } catch (e) {
-      print('เกิดข้อผิดพลาดในการสร้างหรืออัปเดตเอกสาร: $e');
-    }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +41,8 @@ class _Screen_chatState extends State<Screen_chat> {
       onPressed: () {
         popUpDialog(context);
       },
-      child: Icon(Icons.add),
+      elevation: 0,
+      child: Icon(Icons.add,size: 30,),
     ),
       body: FutureBuilder(
         future: Firebase_ListGtoupChat.getNewsFromFirestore(),
@@ -73,22 +61,28 @@ class _Screen_chatState extends State<Screen_chat> {
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    child: ListView.builder(
-                      itemCount: newsList?.length,
-                      itemBuilder: (context, index) {
-                        Map<String, dynamic>? Ima = newsList?[index];
-                        return ListTile(
-                          /*leading: Image.network(
-                            Ima?['groupPic'], // ใช้ URL จาก Firestore
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),*/
-                          title: Text(Ima?['groupName']),
-                          //subtitle: Text(News?['description']),
-                        );
-                      },
+                  child: Card(
+                    color: Colors.white,
+                    child: Container(
+                      child: ListView.builder(
+                        itemCount: newsList?.length,
+                        itemBuilder: (context, index) {
+                          Map<String, dynamic>? Ima = newsList?[index];
+                          return Card(
+                            color: Colors.blue,
+                            child: ListTile(
+                              /*leading: Image.network(
+                                Ima?['groupPic'], // ใช้ URL จาก Firestore
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),*/
+                              title: Text(Ima?['groupName']),
+                              //subtitle: Text(News?['description']),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -121,10 +115,16 @@ class _Screen_chatState extends State<Screen_chat> {
                   Container(
                     child: TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
-                        _save();
-                        Navigator.push(context,MaterialPageRoute(
-                            builder: (context) => Group_chat()));
+                        if(groupName.text==""){
+
+                        }
+                        else {
+                          Navigator.of(context).pop();
+                          DatabaseService(uid:Profile.uid ).createGroup(widget.currentUser, User.id, groupName.text);
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('สร้างห้องแชทสำเร็จ')));
+                        }
                       },
                       child: Text("สร้าง"),
                     ),
@@ -147,5 +147,68 @@ class _Screen_chatState extends State<Screen_chat> {
       },
     );
   }
+}
+groupList() {
+  return StreamBuilder(
+    stream: groups,
+    builder: (context, AsyncSnapshot snapshot) {
+      // make some checks
+      if (snapshot.hasData) {
+        if (snapshot.data['groups'] != null) {
+          if (snapshot.data['groups'].length != 0) {
+            return ListView.builder(
+              itemCount: snapshot.data['groups'].length,
+              itemBuilder: (context, index) {
+                int reverseIndex = snapshot.data['groups'].length - index - 1;
+                return GroupTile(
+                    groupId: getId(snapshot.data['groups'][reverseIndex]),
+                    groupName: getName(snapshot.data['groups'][reverseIndex]),
+                    userName: snapshot.data['fullName']);
+              },
+            );
+          } else {
+            return noGroupWidget();
+          }
+        } else {
+          return noGroupWidget();
+        }
+      } else {
+        return Center(
+          child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor),
+        );
+      }
+    },
+  );
+}
+
+noGroupWidget() {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 25),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {
+            popUpDialog(context);
+          },
+          child: Icon(
+            Icons.add_circle,
+            color: Colors.grey[700],
+            size: 75,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text(
+          "You've not joined any groups, tap on the add icon to create a group or also search from top search button.",
+          textAlign: TextAlign.center,
+        )
+      ],
+    ),
+  );
+}
 }
 

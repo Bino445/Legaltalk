@@ -9,21 +9,23 @@ import 'package:legaltalk/model/profile.dart';
 
 class MainScreen extends StatefulWidget {
   final String currentUser;
-  const MainScreen({super.key, required this.currentUser});
+  final int MyCurrentIndex;
+  const MainScreen({super.key, required this.currentUser, required this.MyCurrentIndex});
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
   late String currentUse;
-  int MyCurrentIndex = 0;
+  late int MyCurrentIndex;
   late List pages;
 
   @override
   void initState() {
     super.initState();
+    MyCurrentIndex = widget.MyCurrentIndex;
     currentUse = widget.currentUser;
-    pages = [Screen_home(currentUser: currentUse), Screen_News(), Screen_Posts(), Screen_chat(currentUser: currentUse)];
+    pages = [Screen_home(currentUser: currentUse), Screen_News(), Screen_Posts(currentUser: currentUse,), Screen_chat(currentUser: currentUse)];
   }
   @override
   Widget build(BuildContext context) {

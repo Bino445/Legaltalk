@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../firebase.dart';
+import '../service/firebase.dart';
 
 class Screen_News extends StatefulWidget {
   const Screen_News({super.key});
@@ -64,7 +64,7 @@ class _Screen_News extends State<Screen_News> {
                         fit: BoxFit.cover,
                       ),
                       title: Text(News?['title']),
-                      subtitle: Text(News?['description']),
+                      //subtitle: Text(News?['description']),
                     );
                   },
                 ),

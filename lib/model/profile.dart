@@ -1,6 +1,11 @@
 class Profile{
-    String? Username;
-    String? Password;
+    static String? username;
+    static String? uid;
 
-    Profile({this.Username,this.Password});
+    static void setUsername(String newName) {
+        username = newName;
+    }
+    static void setUid(String newUid) {
+        uid = newUid;
+    }
 }

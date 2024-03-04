@@ -20,7 +20,6 @@ class Screen_login extends StatefulWidget {
 
 class _Screen_loginState extends State<Screen_login> {
   final formKey = GlobalKey<FormState>();
-  Profile profile = Profile();
   final TextEditingController Username = TextEditingController();
   final TextEditingController Password = TextEditingController();
   bool passwordVisible = false;
@@ -45,10 +44,13 @@ class _Screen_loginState extends State<Screen_login> {
       for (var doc in snapshot.docs) {
         if (doc['User'.toString()] == Users &&
             doc['Password'].toString() == Pass) {
+           String uid= doc.id;
+          Profile.setUid(uid);
+          Profile.setUsername(Users);
           currentUser = doc['User'.toString()];
           Navigator.pushReplacement(
               context, MaterialPageRoute(
-              builder: (context) => MainScreen(currentUser: currentUser)));
+              builder: (context) => MainScreen(currentUser: currentUser, MyCurrentIndex: 0,)));
 
         }
       }

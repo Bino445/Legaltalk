@@ -1,34 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:legaltalk/Screen/screen_account.dart';
+import 'package:legaltalk/Screen/screen_main.dart';
 import 'package:legaltalk/Screen/screen_news.dart';
 import 'package:legaltalk/model/profile.dart';
 
+import '../service/firebase_blog.dart';
+
 class Screen_home extends StatefulWidget {
   final String currentUser;
-
   const Screen_home({Key? key, required this.currentUser}) : super(key: key);
   @override
   State<Screen_home> createState() => _Screen_homeState();
 }
 
 class _Screen_homeState extends State<Screen_home> {
-
+late String currentUser;
+  void initState() {
+    super.initState();
+    currentUser = widget.currentUser;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('สวัสดี${widget.currentUser}'),
+        title: Text('สวัสดี ${widget.currentUser}'),
         leading: Container(
           margin: EdgeInsets.all(10),
-          child: Icon(Icons.book),
+          child: Icon(Icons.waving_hand_rounded),
         ),
         actions: [
           Container(
+            width: 50,
+            height: 50,
             alignment: Alignment.center,
-            child: Icon(Icons.account_circle_outlined),
+            child: IconButton(
+              icon: Icon(Icons.account_circle),
+              color: Colors.black,
+              iconSize: 30,
+              //hoverColor: Color(0xFFD1B06B),
+              highlightColor: Color(0xFFD1B06B),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return Screen_Account();
+                }));
+              },
+            ),
             decoration: BoxDecoration(
-              color: Colors.black12,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(50),
             ),
           ),
         ],
@@ -103,11 +122,9 @@ class _Screen_homeState extends State<Screen_home> {
                   Expanded(
                     child: GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (
-                            context)
-                        {
-                          return Screen_News();
-                        }));
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(
+                            builder: (context) => MainScreen(currentUser:currentUser, MyCurrentIndex: 1,)));
                       },
                       child: Card(
                         color: Color(0xFF1C243C),
@@ -129,11 +146,9 @@ class _Screen_homeState extends State<Screen_home> {
                   Expanded(
                     child: GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (
-                            context)
-                        {
-                          return Screen_News();
-                        }));
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(
+                            builder: (context) => MainScreen(currentUser:currentUser, MyCurrentIndex: 2,)));
                       },
                       child: Card(
                         color: Color(0xFF1C243C),
@@ -156,11 +171,9 @@ class _Screen_homeState extends State<Screen_home> {
                   Expanded(
                     child: GestureDetector(
                       onTap: (){
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (
-                            context)
-                        {
-                          return Screen_News();
-                        }));
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(
+                            builder: (context) => MainScreen(currentUser:currentUser, MyCurrentIndex: 3,)));
                       },
                       child: Card(
                         color: Color(0xFF1C243C),
@@ -196,7 +209,46 @@ class _Screen_homeState extends State<Screen_home> {
                   ),
                 ],
               ),
-            ),//หัวข้อ (บทความ)
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 20, right: 20),
+              child: FutureBuilder(
+                future: Firebase_Blog.getblogFromFirestore(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    } else {
+                      List<Map<String, dynamic>>? blogList = snapshot.data;
+                      int itemCount = blogList?.length ?? 0; // นับจำนวนรายการบล็อก
+                      int topblog = itemCount >= 5 ? 5 : itemCount; // กำหนดจำนวนรายการที่จะแสดง
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.5, // เปลี่ยนค่านี้ตามความเหมาะสม
+                        child: ListView.builder(
+                          itemCount:topblog,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic>? blog = blogList?[index];
+                            return Card(
+                              color: Color(0xFFD1B06B),
+                              child: ListTile(
+                                title: Text(blog?['title'] ?? ''),
+                                subtitle: Text(blog?['descrip'] ?? ''),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),
