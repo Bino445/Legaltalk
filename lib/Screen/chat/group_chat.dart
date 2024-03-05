@@ -60,7 +60,7 @@ class _Group_chatState extends State<Group_chat> {
               onPressed: () {
                 Navigator.pushReplacement(
                     context, MaterialPageRoute(
-                    builder: (context) => GroupInfo(adminName: '', groupName: '', groupId: '',)));
+                    builder: (context) => GroupInfo(adminName:admin, groupName: widget.groupName, groupId: widget.groupId,)));
               },
               icon: const Icon(Icons.info))
         ],

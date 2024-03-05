@@ -9,3 +9,10 @@ class Profile{
         uid = newUid;
     }
 }
+class ChatProfile{
+    static String? Chatid;
+    static String? admin;
+    static void setChatid(String newID) {Chatid = newID;}
+    static void setadmin(String newID) {Chatid = newID;}
+
+}

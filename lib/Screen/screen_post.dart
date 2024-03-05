@@ -4,8 +4,7 @@ import 'package:legaltalk/Screen/screen_add_post.dart';
 import '../service/firebase_blog.dart';
 
 class Screen_Posts extends StatefulWidget {
-  final String currentUser;
-  const Screen_Posts({Key? key, required this.currentUser}) : super(key: key);
+  const Screen_Posts({super.key});
 
   @override
   State<Screen_Posts> createState() => _Screen_PostsState();
@@ -16,11 +15,7 @@ class _Screen_PostsState extends State<Screen_Posts> {
   final TextEditingController authorName = TextEditingController();
   final TextEditingController title = TextEditingController();
   final TextEditingController descrip = TextEditingController();
-  late String currentUser;
-  void initState() {
-    super.initState();
-    currentUser = widget.currentUser;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +84,7 @@ class _Screen_PostsState extends State<Screen_Posts> {
             FloatingActionButton(
               child: Icon(Icons.post_add_rounded),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Screen_Add_Blog(currentUser: currentUser,)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Screen_Add_Blog()));
               },
               backgroundColor: Color(0xFFD1B06B),
             ),

@@ -50,8 +50,7 @@ class _Screen_loginState extends State<Screen_login> {
           currentUser = doc['User'.toString()];
           Navigator.pushReplacement(
               context, MaterialPageRoute(
-              builder: (context) => MainScreen(currentUser: currentUser, MyCurrentIndex: 0,)));
-
+              builder: (context) => MainScreen(MyCurrentIndex: 0,)));
         }
       }
       });
@@ -78,7 +77,7 @@ class _Screen_loginState extends State<Screen_login> {
                   controller: Username,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                    hintText: 'ค้นหา',
+                    labelText: 'Username',
                   ),
                 ),
                 TextFormField(

@@ -7,24 +7,19 @@ import 'package:legaltalk/model/profile.dart';
 import '../service/firebase_blog.dart';
 
 class Screen_home extends StatefulWidget {
-  final String currentUser;
-  const Screen_home({Key? key, required this.currentUser}) : super(key: key);
+  const Screen_home({super.key});
   @override
   State<Screen_home> createState() => _Screen_homeState();
 }
 
 class _Screen_homeState extends State<Screen_home> {
-late String currentUser;
-  void initState() {
-    super.initState();
-    currentUser = widget.currentUser;
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('สวัสดี ${widget.currentUser}'),
+        title: Text('สวัสดี ${Profile.username}'),
         leading: Container(
           margin: EdgeInsets.all(10),
           child: Icon(Icons.waving_hand_rounded),
@@ -124,7 +119,7 @@ late String currentUser;
                       onTap: (){
                         Navigator.pushReplacement(
                             context, MaterialPageRoute(
-                            builder: (context) => MainScreen(currentUser:currentUser, MyCurrentIndex: 1,)));
+                            builder: (context) => MainScreen(MyCurrentIndex: 1,)));
                       },
                       child: Card(
                         color: Color(0xFF1C243C),
@@ -148,7 +143,7 @@ late String currentUser;
                       onTap: (){
                         Navigator.pushReplacement(
                             context, MaterialPageRoute(
-                            builder: (context) => MainScreen(currentUser:currentUser, MyCurrentIndex: 2,)));
+                            builder: (context) => MainScreen(MyCurrentIndex: 2,)));
                       },
                       child: Card(
                         color: Color(0xFF1C243C),
@@ -173,7 +168,7 @@ late String currentUser;
                       onTap: (){
                         Navigator.pushReplacement(
                             context, MaterialPageRoute(
-                            builder: (context) => MainScreen(currentUser:currentUser, MyCurrentIndex: 3,)));
+                            builder: (context) => MainScreen(MyCurrentIndex: 3,)));
                       },
                       child: Card(
                         color: Color(0xFF1C243C),

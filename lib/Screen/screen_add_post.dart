@@ -4,8 +4,7 @@ import 'package:legaltalk/Screen/screen_main.dart';
 import 'package:legaltalk/Screen/screen_post.dart';
 
 class Screen_Add_Blog extends StatefulWidget {
-  final String currentUser;
-  const Screen_Add_Blog({Key? key, required this.currentUser}) : super(key: key);
+  const Screen_Add_Blog({super.key});
 
   @override
   State<Screen_Add_Blog> createState() => _Screen_Add_BlogState();
@@ -17,11 +16,7 @@ class _Screen_Add_BlogState extends State<Screen_Add_Blog> {
   final TextEditingController title = TextEditingController();
   final TextEditingController descrip = TextEditingController();
   final CollectionReference blog = FirebaseFirestore.instance.collection('blog');
-  late String currentUser;
-  void initState() {
-    super.initState();
-    currentUser = widget.currentUser;
-  }
+
 
   Future<void> _save([DocumentSnapshot? documentSnapshot]) async {
     try {
@@ -73,7 +68,7 @@ class _Screen_Add_BlogState extends State<Screen_Add_Blog> {
                   _save();
                   Navigator.pushReplacement(
                       context, MaterialPageRoute(
-                      builder: (context) => MainScreen(currentUser:currentUser, MyCurrentIndex: 2,)));
+                      builder: (context) => MainScreen(MyCurrentIndex: 2,)));
                 },
               ),)
         ],

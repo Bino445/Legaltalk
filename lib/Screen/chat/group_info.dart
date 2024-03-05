@@ -85,7 +85,7 @@ class _GroupInfoState extends State<GroupInfo> {
                                   .whenComplete(() {
                                 Navigator.pushReplacement(
                                     context, MaterialPageRoute(
-                                    builder: (context) => MainScreen(currentUser:Profile.username.toString(), MyCurrentIndex: 3,)));
+                                    builder: (context) => MainScreen( MyCurrentIndex: 3,)));
                               });
                             },
                             icon: const Icon(
