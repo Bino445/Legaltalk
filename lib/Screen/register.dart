@@ -5,6 +5,8 @@ import 'package:legaltalk/Screen/screen_main.dart';
 import '../firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../service/database_service.dart';
+
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({super.key});
 
@@ -23,12 +25,8 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
   Future<void> _save([DocumentSnapshot? documentSnapshot]) async {
     try {
-      final Map<String, dynamic> data = {
-        "User": Username.text,
-        "Email": Email.text,
-        "Password": Password.text,
-      };
-      await User.add(data);
+      DatabaseService().savingUserData(
+          Username.text, Email.text, Password.text);
 
       // ล้างข้อมูลในฟอร์ม
       Username.clear();

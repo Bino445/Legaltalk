@@ -60,21 +60,19 @@ class Screen_SeePost extends StatelessWidget {
                 fit: BoxFit.cover,
               ),*/
               SizedBox(height: 10),
-              Center(
-                child: Card(
-                  color: Color(0xFF1C243C),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      seepost?['descrip'] ?? '',
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
+                Container(
+                  margin: EdgeInsets.only(left: 20,right: 20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        seepost?['descrip'] ?? '',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                        ),
                       ),
                     ),
-                  ),
                 ),
-              ),
             ],
           ),
         ),

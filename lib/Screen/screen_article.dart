@@ -25,6 +25,7 @@ class ScreenArticle extends StatelessWidget {
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 16),
               Image.network(

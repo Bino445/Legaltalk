@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:legaltalk/Screen/screen_add_post.dart';
 import 'package:legaltalk/Screen/screen_see_post.dart';
-import '../firebase_blog.dart';
+import '../service/firebase_blog.dart';
 
 class Screen_Posts extends StatefulWidget {
   const Screen_Posts({super.key});
@@ -55,7 +55,6 @@ class _Screen_PostsState extends State<Screen_Posts> {
                       return Card(
                         color: Colors.grey.shade300,
                         child: ListTile(
-
                           onTap: () {
                             Navigator.push(
                               context,

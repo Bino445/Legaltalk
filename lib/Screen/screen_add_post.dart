@@ -2,6 +2,7 @@ import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:legaltalk/Screen/screen_main.dart';
 import 'package:legaltalk/Screen/screen_post.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -104,10 +105,9 @@ class _Screen_Add_BlogState extends State<Screen_Add_Blog> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('โพสกระทู้สำเร็จ!')),
                     );
-                    Navigator.pop(
-                        context, MaterialPageRoute(builder: (context) {
-                      return Screen_Posts();
-                    }));
+                    Navigator.pushReplacement(
+                        context, MaterialPageRoute(
+                        builder: (context) => MainScreen(MyCurrentIndex: 2,)));
                   }
                 },
               ),)

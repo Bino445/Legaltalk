@@ -7,6 +7,8 @@ import 'package:legaltalk/Screen/screen_privacy.dart';
 import '../firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../model/profile.dart';
+
 class Screen_login extends StatefulWidget {
   const Screen_login({super.key});
 
@@ -43,10 +45,24 @@ class _Screen_loginState extends State<Screen_login> {
     snapshots.listen((snapshot) {
       for (var doc in snapshot.docs) {
         if (doc['User'.toString()] == Users && doc['Password'].toString() == Pass) {
+          String uid= doc.id;
+          Profile.setUid(uid);
+          Profile.setUsername(Users);
           currentUser = doc['User'.toString()];
           Navigator.pushReplacement(
               context, MaterialPageRoute(
-              builder: (context) => MainScreen(currentUser: currentUser)));
+              builder: (context) => MainScreen(MyCurrentIndex: 0,)));
+        }
+        else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('ไม่พบบัญชีผู้ใช้ กรุณากรอกใหม่ให้ถูกต้อง',
+                style: TextStyle(color: Colors.red),
+              ),
+              backgroundColor: Color(0xFF1C243C),
+            ),
+          );
+          break;
         }
       }
     });
@@ -132,7 +148,7 @@ class _Screen_loginState extends State<Screen_login> {
                       ),
                       padding: EdgeInsets.all(20) //content padding inside button
                   ),
-                    icon: Icon(Icons.login),
+                    icon: Icon(Icons.login, color: Colors.white,),
                     label: Text(
                         "เข้าสู่ระบบ",
                         style: TextStyle(fontSize: 20,
