@@ -277,11 +277,26 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                                       title: Text("กรุณากรอกข้อมูลให้ครบถ้วน", textAlign: TextAlign.center,),
                                     );
                                   });
-                            }else {
+                            }
+                            if (CF_Password.text != Password.text){
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      backgroundColor: Colors.redAccent,
+                                      title: Text("กรุณากรอกรหัสผ่านให้ถูกต้อง!", textAlign: TextAlign.center,),
+                                    );
+                                  });
+                            }
+                            else {
                               //saveData();
                               validateCheckbox();
                               _save();
-                              Navigator.push(context,MaterialPageRoute(builder: (context){return Screen_login();}));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบอีกครั้ง')),
+                              );
+                              Navigator.push(context,MaterialPageRoute(builder: (context)
+                              {return Screen_login();}));
                             }
                             },
                             //saveData();

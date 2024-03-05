@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:legaltalk/Screen/screen_chat.dart';
 import 'package:legaltalk/Screen/screen_home.dart';
 import 'package:legaltalk/Screen/screen_news.dart';
@@ -19,6 +20,7 @@ class _MainScreenState extends State<MainScreen> {
   late String currentUse;
   int MyCurrentIndex = 0;
   late List pages;
+
 
   @override
   void initState() {

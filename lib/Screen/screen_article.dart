@@ -34,10 +34,14 @@ class ScreenArticle extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               SizedBox(height: 8),
-              Text(
-                article?['content'] ?? '',
-                style: TextStyle(
-                  fontSize: 18,
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  article?['content'] ?? '',
+
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ],

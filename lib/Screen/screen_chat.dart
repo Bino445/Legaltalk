@@ -42,11 +42,14 @@ class _Screen_chatState extends State<Screen_chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-          leading: IconButton.outlined(onPressed: (){}, icon: Icon(Icons.search,),disabledColor: Colors.white),
+          backgroundColor: Color(0xFF1C243C),
+          shadowColor: Colors.black,
+          leading: IconButton.outlined(onPressed: (){}, icon: Icon(Icons.search,color: Colors.white,),//disabledColor: Colors.white
+          ),
           actions: [
             Padding(
               padding: EdgeInsets.only(right: 20),
-              child: Text("Group Chat", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              child: Text("Group Chat", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
             ),
           ]
       ),
