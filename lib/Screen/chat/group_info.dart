@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:legaltalk/Screen/screen_main.dart';
 import 'package:legaltalk/model/profile.dart';
@@ -20,6 +22,28 @@ class GroupInfo extends StatefulWidget {
 }
 
 class _GroupInfoState extends State<GroupInfo> {
+
+  DeletMember() async {
+    await Firebase.initializeApp();
+    final firestore = FirebaseFirestore.instance;
+    Stream<QuerySnapshot> snapshots = firestore.collection('User').where(
+        'groups', arrayContains: '${ChatProfile.Chatid}_${widget.groupName}').snapshots();
+    snapshots.listen((snapshot) {
+      for (var doc in snapshot.docs) {
+        List<dynamic> groups = doc['groups'];
+        if (groups.contains("${ChatProfile.Chatid}_${widget.groupName}")) {
+          // ลบค่า '${ChatProfile.Chatid}_${widget.groupName}' ออกจาก list
+          //groups.remove("${ChatProfile.Chatid}_${widget.groupName}");
+          // อัปเดตเอกสาร
+          doc.reference.update({'groups': FieldValue.arrayRemove(["${ChatProfile.Chatid}_${widget.groupName}"])}).then((_)
+          {
+          }).catchError((error) {
+          });
+        }
+      }
+    });
+  }
+
   Stream? members;
   @override
   void initState() {
@@ -75,18 +99,25 @@ class _GroupInfoState extends State<GroupInfo> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () async {
-                              DatabaseService(
-                                      uid: Profile.uid)
-                                  .toggleGroupJoin(
-                                      widget.groupId,
-                                      getName(widget.adminName),
-                                      widget.groupName)
-                                  .whenComplete(() {
-                                Navigator.pushReplacement(
-                                    context, MaterialPageRoute(
-                                    builder: (context) => MainScreen( MyCurrentIndex: 3,)));
-                              });
+                            onPressed: () {
+                              if(ChatProfile.admin.toString()=="User_"'${Profile.username}'.toString())
+                              {
+                                popUpDialog(context);
+                              }
+                              else {
+                                DatabaseService(
+                                    uid: Profile.uid)
+                                    .toggleGroupJoin(
+                                    widget.groupId,
+                                    Profile.username.toString(),
+                                    widget.groupName)
+                                    .whenComplete(() {
+                                  Navigator.pushReplacement(
+                                      context, MaterialPageRoute(
+                                      builder: (context) =>
+                                          MainScreen(MyCurrentIndex: 3,)));
+                                });
+                              }
                             },
                             icon: const Icon(
                               Icons.done,
@@ -100,7 +131,7 @@ class _GroupInfoState extends State<GroupInfo> {
               icon: const Icon(Icons.exit_to_app))
         ],
       ),
-      body: Container(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           children: [
@@ -124,18 +155,22 @@ class _GroupInfoState extends State<GroupInfo> {
                   const SizedBox(
                     width: 20,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Group: ${widget.groupName}",
-                        style: const TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text("Admin: ${getName(widget.adminName)}")
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Group: ${widget.groupName}",
+                          softWrap: true,
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text("Admin: ${getName(widget.adminName)}",
+                          softWrap: true,)
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -197,6 +232,69 @@ class _GroupInfoState extends State<GroupInfo> {
             color: Theme.of(context).primaryColor,
           ));
         }
+      },
+    );
+  }
+  void popUpDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("ลบห้องแชท"),
+          content: Text("คุณต้องการลบห้องแชทนี้หรือไม่"),
+          actions: [
+            Container(
+              margin: EdgeInsets.only(top: 10, right: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+                    child: TextButton(
+                      onPressed: () {
+                        DeletMember();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('ลบห้องแชทสำเร็จ',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Color(0xFF1C243C),
+                          ),
+                        );
+                        Navigator.of(context).pop();
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(
+                            builder: (context) => MainScreen(MyCurrentIndex: 3,)));
+                        FirebaseFirestore.instance.collection('groups').doc(ChatProfile.Chatid).get().then((doc) {
+                          if (doc.exists) {
+                            // ลบทุกคอลเล็กชันภายในเอกสาร
+                            doc.reference.collection('messages').get().then((snapshot) {
+                              for (DocumentSnapshot ds in snapshot.docs) {
+                                ds.reference.delete();
+                              }
+                            });
+                            // ลบเอกสาร
+                            doc.reference.delete();
+                          }
+                        });
+                      },
+                      child: Text("ลบ"),
+                    ),
+                  ),
+                  Container(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("ปิด"),
+                    ),
+                  ),
+                ],
+
+              ),
+            ),
+
+          ],
+        );
       },
     );
   }

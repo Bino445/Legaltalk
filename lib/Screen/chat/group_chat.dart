@@ -51,10 +51,16 @@ class _Group_chatState extends State<Group_chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(onPressed: () {
+          /*Navigator.pushReplacement(
+              context, MaterialPageRoute(
+              builder: (context) => MainScreen(MyCurrentIndex: 3,)));*/
+          Navigator.pop(context);
+          }, icon: Icon(Icons.arrow_back_ios_new_rounded),color: Colors.white,),
         centerTitle: true,
         elevation: 0,
-        title: Text(widget.groupName),
-        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(widget.groupName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+        backgroundColor: Color(0xFF1C243C),
         actions: [
           IconButton(
               onPressed: () {
@@ -62,7 +68,7 @@ class _Group_chatState extends State<Group_chat> {
                     context, MaterialPageRoute(
                     builder: (context) => GroupInfo(adminName:admin, groupName: widget.groupName, groupId: widget.groupId,)));
               },
-              icon: const Icon(Icons.info))
+              icon: const Icon(Icons.info), color: Colors.white,)
         ],
       ),
       body: Stack(
@@ -75,7 +81,7 @@ class _Group_chatState extends State<Group_chat> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
               width: MediaQuery.of(context).size.width,
-              color: Colors.grey[700],
+              color: Colors.grey.shade500,
               child: Row(children: [
                 Expanded(
                     child: TextFormField(
@@ -98,7 +104,7 @@ class _Group_chatState extends State<Group_chat> {
                     height: 50,
                     width: 50,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
+                      color: Color(0xFFD1B06B),
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: const Center(

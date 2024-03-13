@@ -25,16 +25,6 @@ class _Screen_AccountState extends State<Screen_Account> {
             ),
           ]
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Icon(Icons.account_circle,size: 200,color: Colors.grey[700],)
-            ],
-          ),
-        ),
-      )
-
     );
   }
 }

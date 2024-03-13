@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:legaltalk/Screen/screen_account.dart';
+import 'package:legaltalk/Screen/screen_login.dart';
 import 'package:legaltalk/Screen/screen_main.dart';
 import 'package:legaltalk/Screen/screen_news.dart';
+import 'package:legaltalk/Screen/screen_see_post.dart';
 import 'package:legaltalk/model/profile.dart';
 
 import '../service/firebase_blog.dart';
@@ -45,7 +47,64 @@ class _Screen_homeState extends State<Screen_home> {
               borderRadius: BorderRadius.circular(50),
             ),
           ),
+          Container(
+            width: 50,
+            height: 50,
+            alignment: Alignment.center,
+            child: IconButton(
+              icon: Icon(Icons.logout),
+              color: Colors.black,
+              iconSize: 30,
+              hoverColor: Color(0xFFD1B06B),
+              highlightColor: Color(0xFFD1B06B),
+              onPressed: (){
+                showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Text("คุณต้องการออกจากระบบหรือไม่"),
+                    actions: [
+                      Container(
+                        margin: EdgeInsets.only(top: 10, right: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  Profile.setUsername("");
+                                  Profile.setUid("");
+                                  Navigator.of(context).pop();
+                                  Navigator.pushReplacement(
+                                  context, MaterialPageRoute(
+                                  builder: (context) => Screen_login()));
+                                },
+                                child: Text("ออกจากระบบ"),
+                              ),
+                            ),
+                            Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("ยกเลิก"),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+              },
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+            ),
+          ),
         ],
+
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -71,7 +130,7 @@ class _Screen_homeState extends State<Screen_home> {
                 ),
               ),
             ),//ตัวหนังสือ "มีอะไรให้ช่วยไหม?"
-            Container(
+            /*Container(
               margin: EdgeInsets.only(top: 10, left: 20, right: 20),
               decoration: BoxDecoration(
                 boxShadow: [
@@ -98,7 +157,7 @@ class _Screen_homeState extends State<Screen_home> {
                   ),
                 ],
               ),
-            ),//ช่องค้นหา
+            ),//ช่องค้นหา*/
             Container(
               margin: EdgeInsets.only(top: 30, left: 20, right: 20),
               child: Row(
@@ -176,11 +235,11 @@ class _Screen_homeState extends State<Screen_home> {
                           children: <Widget>[
                             Center(
 
-                                child: Text(
+                              child: Text(
                                   "Group chat",
                                   style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
-                                    textAlign: TextAlign.center
-                                ),
+                                  textAlign: TextAlign.center
+                              ),
                             ),
                             Padding(
                               padding: EdgeInsets.all(12),
@@ -230,10 +289,21 @@ class _Screen_homeState extends State<Screen_home> {
                           itemBuilder: (context, index) {
                             Map<String, dynamic>? blog = blogList?[index];
                             return Card(
-                              color: Color(0xFFD1B06B),
+                              color: Colors.grey.shade300,
                               child: ListTile(
-                                title: Text(blog?['title'] ?? ''),
-                                subtitle: Text(blog?['descrip'] ?? ''),
+
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Screen_SeePost(seepost: blog),
+                                    ),
+                                  );
+                                },
+                                title: Text(blog?['title'], style: TextStyle(fontWeight: FontWeight.bold),),
+                                subtitle: Text(
+                                    blog?['authorName']),
+                                trailing: Icon(Icons.arrow_forward_ios_rounded),
                               ),
                             );
                           },

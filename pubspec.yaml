@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.2.1 <4.0.0'
+  sdk: '>=3.2.2 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -37,9 +37,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.25.4
   cloud_firestore: ^4.15.5
-  url_launcher: ^6.0.12
+  url_launcher: ^6.2.5
   flutter_secure_storage: ^9.0.0
   http: ^1.2.0
+  web: ^0.5.1
 
 dev_dependencies:
   flutter_test:

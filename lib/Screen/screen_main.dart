@@ -3,7 +3,6 @@ import 'package:legaltalk/Screen/screen_chat.dart';
 import 'package:legaltalk/Screen/screen_home.dart';
 import 'package:legaltalk/Screen/screen_news.dart';
 import 'package:legaltalk/Screen/screen_post.dart';
-import 'package:legaltalk/model/profile.dart';
 
 
 
@@ -28,6 +27,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     Widget MyNavBar = BottomNavigationBar(
+        selectedItemColor: Color(0xFF1C243C),
+        unselectedItemColor: Colors.grey.shade400,
         currentIndex: MyCurrentIndex,
         onTap: (int index){
           setState(() {

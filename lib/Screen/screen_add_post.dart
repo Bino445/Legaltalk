@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:legaltalk/Screen/screen_main.dart';
-import 'package:legaltalk/Screen/screen_post.dart';
 
 class Screen_Add_Blog extends StatefulWidget {
   const Screen_Add_Blog({super.key});
@@ -12,6 +11,7 @@ class Screen_Add_Blog extends StatefulWidget {
 
 class _Screen_Add_BlogState extends State<Screen_Add_Blog> {
 
+  //final picker = ImagePicker();
   final TextEditingController authorName = TextEditingController();
   final TextEditingController title = TextEditingController();
   final TextEditingController descrip = TextEditingController();
@@ -36,9 +36,26 @@ class _Screen_Add_BlogState extends State<Screen_Add_Blog> {
       print('เกิดข้อผิดพลาดในการสร้างหรืออัปเดตเอกสาร: $e');
     }
   }
+  /*Future pickImage(ImageSource source) async{
+    final ImagePicker _imagePicker = ImagePicker();
+    XFile? _file = await _imagePicker.pickImage(source: source);
+    if(_file != null){
+      return await _file.readAsBytes();
+    }
+    print('ไม่ได้เลือกรูป');
+  }
+
+  Unit8List?   _image;
+  void selectImage() async{
+    Unit8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }*/
+
+
 
   //late String authorName, title, descrip;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,12 +63,16 @@ class _Screen_Add_BlogState extends State<Screen_Add_Blog> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center ,
           children: <Widget>[
-            Text(
+            Image.asset("assets/images/logotext.png",
+              width: 80,
+              height: 80,
+            ),
+            /*Text(
               "LegalTalk",
               style: TextStyle(
                   fontSize: 25,
                   color: Color(0xFF1C243C),
-                  fontWeight: FontWeight.bold),)
+                  fontWeight: FontWeight.bold),)*/
           ],
         ),
         backgroundColor: Colors.transparent,
@@ -65,10 +86,25 @@ class _Screen_Add_BlogState extends State<Screen_Add_Blog> {
                 //hoverColor: Color(0xFFD1B06B),
                 highlightColor: Color(0xFFD1B06B),
                 onPressed: (){
-                  _save();
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(
-                      builder: (context) => MainScreen(MyCurrentIndex: 2,)));
+                  if(title.text == "" || authorName.text == "" || descrip.text == ""){
+                    showDialog(
+                      //barrierColor: Color(0xFFD1B06B),
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: Color(0xFFD1B06B),
+                            title: Text("กรุณากรอกข้อมูลให้ครบถ้วน", textAlign: TextAlign.center,),
+                          );
+                        });
+                  }else {
+                    _save();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('โพสกระทู้สำเร็จ!')),
+                    );
+                    Navigator.pushReplacement(
+                        context, MaterialPageRoute(
+                        builder: (context) => MainScreen(MyCurrentIndex: 2,)));
+                  }
                 },
               ),)
         ],
@@ -84,27 +120,30 @@ class _Screen_Add_BlogState extends State<Screen_Add_Blog> {
                 color: Color(0xFF1C243C), borderRadius: BorderRadius.circular(6)
               ),
               width: MediaQuery.of(context).size.width,
-              child: Icon(Icons.add_a_photo_rounded, color: Colors.white,),
+              child: IconButton(onPressed: (){
+
+              }, icon: Icon(Icons.add_a_photo_rounded),),
             ),
-            SizedBox(height: 8,),
+            SizedBox(height: 20,),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: <Widget>[
                   TextField(
-                    decoration: InputDecoration(hintText: "ชื่อผู้เขียน"),
+                    decoration: InputDecoration(labelText: "ชื่อผู้เขียน"),
                     keyboardType: TextInputType.text,
                     controller: authorName,
                   ),
                   TextField(
-                    decoration: InputDecoration(hintText: "หัวข้อ"),
+                    decoration: InputDecoration(labelText: "หัวข้อ"),
                     keyboardType: TextInputType.text,
                     controller: title,
                   ),
                   TextField(
-                    decoration: InputDecoration(hintText: "คำอธิบาย"),
+                    decoration: InputDecoration(labelText: "คำอธิบาย"),
                     keyboardType: TextInputType.text,
                     controller: descrip,
+                    maxLines: null,
                   ),
                 ],
               ),
@@ -114,4 +153,8 @@ class _Screen_Add_BlogState extends State<Screen_Add_Blog> {
       ),
     );
   }
+
 }
+
+//class Unit8List {}
+

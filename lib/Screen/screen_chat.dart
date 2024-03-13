@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:legaltalk/Screen/screen_main.dart';
+import 'package:legaltalk/Screen/search_page.dart';
 import 'package:legaltalk/model/profile.dart';
 import '../service/database_service.dart';
 import '../service/firebase_ListGroupChat.dart';
@@ -20,6 +21,7 @@ class _Screen_chatState extends State<Screen_chat> {
   late String admin;
   @override
   void initState() {
+
     super.initState();
     admin = Profile.username.toString();
 
@@ -29,32 +31,48 @@ class _Screen_chatState extends State<Screen_chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-          leading: IconButton.outlined(onPressed: (){}, icon: Icon(Icons.search,),disabledColor: Colors.white),
+        backgroundColor: Color(0xFF1C243C),
+          //leading: IconButton.outlined(onPressed: (){},
+              //icon: Icon(Icons.search,), color: Colors.white),
           actions: [
             Padding(
               padding: EdgeInsets.only(right: 20),
-              child: Text("Group Chat", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                child: Text("Group Chat",
+                    style: TextStyle(fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
             ),
           ]
       ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: () {
-        popUpDialog(context);
-      },
-      elevation: 0,
-      child: Icon(Icons.add,size: 30,),
-    ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          popUpDialog(context);
+        },
+        elevation: 0,
+        backgroundColor: Color(0xFFD1B06B),
+        child: Icon(Icons.add,size: 30,),
+      ),
       body: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(top: 30, left: 20, right: 20),
-            child: Row(
-              children: [
-                Text(
-                  "เข้าร่วมแล้ว",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ],
+      SizedBox(
+      height: 50,
+            child: Container(
+              margin: EdgeInsets.only(left: 20, right: 20),
+              child: Row(
+                children: [
+                  Text(
+                    "Group chat ที่เข้าร่วมแล้ว",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Spacer(),
+                  IconButton(
+                      onPressed: ()
+                  {
+                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Search_page()),
+                  );
+                    }, icon: Icon(Icons.search)),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -82,7 +100,7 @@ class _Screen_chatState extends State<Screen_chat> {
                             itemBuilder: (context, index) {
                               Map<String, dynamic>? Ima = newsList?[index];
                               return Card(
-                                color: Colors.blue,
+                                color: Colors.grey.shade300,
                                 child: ListTile(
                                   title: Text(Ima?['groupName']),
                                   onTap: (){
@@ -104,7 +122,7 @@ class _Screen_chatState extends State<Screen_chat> {
               },
             ),
           ),
-          Container(
+          /*Container(
             margin: EdgeInsets.only(top: 30, left: 20, right: 20),
             child: Row(
               children: [
@@ -140,22 +158,22 @@ class _Screen_chatState extends State<Screen_chat> {
                             itemBuilder: (context, index) {
                               Map<String, dynamic>? Ima = newsList?[index];
                               return
-                                  Card(
-                                    color: Colors.blue,
-                                    child: ListTile(
-                                      title: Text(Ima?['groupName']),
-                                      trailing: IconButton(
-                                        icon: Icon(Icons.edit), // เปลี่ยนไอคอนตามที่คุณต้องการ
-                                        onPressed: () {
-                                            ChatProfile.setChatid(Ima?['groupId']);
-                                            ChatProfile.setadmin(Ima?['admin']);
-                                            Navigator.push(context, MaterialPageRoute(
-                                              builder: (context) => Group_chat(groupId:Ima?['groupId'] , groupName: Ima?['groupName'], userName: Profile.username.toString(),),
-                                            ));
-                                        },
-                                      ),
+                                Card(
+                                  color: Colors.blue,
+                                  child: ListTile(
+                                    title: Text(Ima?['groupName']),
+                                    trailing: IconButton(
+                                      icon: Icon(Icons.edit), // เปลี่ยนไอคอนตามที่คุณต้องการ
+                                      onPressed: () {
+                                        ChatProfile.setChatid(Ima?['groupId']);
+                                        ChatProfile.setadmin(Ima?['admin']);
+                                        Navigator.push(context, MaterialPageRoute(
+                                          builder: (context) => Group_chat(groupId:Ima?['groupId'] , groupName: Ima?['groupName'], userName: Profile.username.toString(),),
+                                        ));
+                                      },
                                     ),
-                                  );
+                                  ),
+                                );
                             },
                           ),
                         ),
@@ -165,7 +183,7 @@ class _Screen_chatState extends State<Screen_chat> {
                 }
               },
             ),
-          ),
+          )*/
         ],
       ),
     );
@@ -191,20 +209,19 @@ class _Screen_chatState extends State<Screen_chat> {
                 children: <Widget>[
                   Container(
                     child: TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if(groupName.text==""){
 
                         }
                         else {
-                          DatabaseService(uid:Profile.uid ).createGroup(Profile.username.toString(), User.id, groupName.text);
-                          Navigator.of(context).pop();
+                          await DatabaseService(uid:Profile.uid ).createGroup(Profile.username.toString(), User.id, groupName.text);
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('สร้างห้องแชทสำเร็จ')));
-                          setState(() {
+                          Navigator.of(context).pop();
                             Navigator.pushReplacement(
                                 context, MaterialPageRoute(
                                 builder: (context) => MainScreen( MyCurrentIndex: 3,)));
-                          });
+
                         }
                       },
                       child: Text("สร้าง"),
@@ -215,7 +232,7 @@ class _Screen_chatState extends State<Screen_chat> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                               child: Text("ปิด"),
+                      child: Text("ปิด"),
                     ),
                   ),
                 ],
