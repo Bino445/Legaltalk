@@ -19,13 +19,7 @@ class _Search_pageState extends State<Search_page> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController search = TextEditingController();
   QuerySnapshot? searchSnapshot;
-  QuerySnapshot? searchSnapshot_loading;
   bool boxsearch = false;
-  @override
-  void setState(VoidCallback fn) {
-    super.initState();
-    searchSnapshot_loading = DatabaseService().searchGroupName(search.text);
-  }
   @override
   /*void _runFilter(String Keyword){
     if(Keyword.isEmpty){
@@ -68,19 +62,7 @@ class _Search_pageState extends State<Search_page> {
             ),
             child: Column(
               children:[
-                TextFormField(
-                  controller:search,
-                  decoration: InputDecoration(
-                    hintText: 'ค้นหา',
-                    filled: true,
-                    fillColor: Colors.white,
-                    suffixIcon: IconButton.outlined(onPressed: (){cheak();}, icon: Icon(Icons.search,),disabledColor: Colors.white),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
+
               ],
             ),
             ),
@@ -98,14 +80,6 @@ class _Search_pageState extends State<Search_page> {
         });
       });
     }
-    else{
-      await DatabaseService().searchGroupName(search.text).then((snapshot){
-        setState(() {
-          searchSnapshot = snapshot;
-          boxsearch = false;
-        });
-      });
-    }
   }
   groupList(){
     return boxsearch? ListView.builder(
@@ -117,88 +91,126 @@ class _Search_pageState extends State<Search_page> {
           searchSnapshot!.docs[index]['groupName'],
           searchSnapshot!.docs[index]['admin'],
         );
-      }
-      )
-        : Container(
-      child: FutureBuilder(
-        future: Firebase_ListGtoupChatNotJoin.getNewsFromFirestore(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            if (snapshot.hasError) {
+      }) : //Container();
+    Container(
+      child: Expanded(
+        child: FutureBuilder(
+          future: Firebase_ListGtoupChatNotJoin.getNewsFromFirestore(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Text('Error: ${snapshot.error}'),
+                child: CircularProgressIndicator(),
               );
             } else {
-              List<Map<String, dynamic>>? newsList = snapshot.data;
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    color: Colors.white,
-                    child: ListView.builder(
-                      itemCount: newsList?.length,
-                      itemBuilder: (context, index) {
-                        Map<String, dynamic>? Ima = newsList?[index];
-                        return Card(
-                          color: Colors.grey.shade300,
-                          child: ListTile(
-                            title: Text(Ima?['groupName']),
-                            onTap: (){
-                              ChatProfile.setChatid(Ima?['groupId']);
-                              ChatProfile.setadmin(Ima?['admin']);
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => Group_chat(groupId:Ima?['groupId'] , groupName: Ima?['groupName'], userName: Profile.username.toString(),),
-                              ));
-                            },
-                          ),
-                        );
-                      },
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                List<Map<String, dynamic>>? newsList = snapshot.data;
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      color: Colors.white,
+                      child: ListView.builder(
+                        itemCount: newsList?.length,
+                        itemBuilder: (context, index) {
+                          Map<String, dynamic>? Ima = newsList?[index];
+                          return Card(
+                            color: Colors.grey.shade300,
+                            child: ListTile(
+                              title: Text(Ima?['groupName']),
+                              trailing: IconButton(
+                                icon: Text("เข้าร่วม",
+                                  style: TextStyle(color: Colors.green),),
+                                onPressed: () {
+                                  ChatProfile.setChatid(Ima?['groupId']);
+                                  ChatProfile.setadmin(Ima?['admin']);
+                                  DatabaseService(uid: Profile.uid)
+                                      .toggleGroupJoin(Ima?['groupId'],
+                                      Profile.username.toString(),
+                                      Ima?['groupName']);
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'เข้าร่วมห้องแชทสำเร็จ',
+                                        style: TextStyle(
+                                            color: Colors.green),
+                                      ),
+                                      backgroundColor: Color(0xFF1C243C),
+                                    ),
+                                  );
+                                  Future.delayed(
+                                      Duration(milliseconds: 500), () {
+                                    Navigator.pushReplacement(
+                                        context, MaterialPageRoute(
+                                        builder: (context) => MainScreen(
+                                          MyCurrentIndex: 3,)));
+                                  });
+                                },
+                              ),
+                            )
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
+              }
             }
-          }
-        },
+          },
+        ),
       ),
     );
   }
+  CheackJoind(String groupName, String groupId) async
+  {
+    bool isJoined = await DatabaseService().isUserJoined(groupName,groupId,Profile.username.toString());
+    if(isJoined){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
   Widget groupTile( String groupId, String groupName, String admin){
     return ListTile(
             title: Text(groupName),
-            trailing: IconButton(
-              icon: Text("เข้าร่วม",
-                style: TextStyle(color: Colors.green),),
-              onPressed: () {
-                ChatProfile.setChatid(groupId);
-                ChatProfile.setadmin(admin);
-                DatabaseService(uid: Profile.uid)
-                    .toggleGroupJoin(groupId,
-                    Profile.username.toString(),
-                    groupName);
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      'เข้าร่วมห้องแชทสำเร็จ',
-                      style: TextStyle(
-                          color: Colors.green),
+            trailing: Visibility(
+              //visible: CheackJoind(groupName, groupId),
+              child: IconButton(
+                icon: Text("เข้าร่วม",
+                  style: TextStyle(color: Colors.green),),
+                onPressed: () {
+                  ChatProfile.setChatid(groupId);
+                  ChatProfile.setadmin(admin);
+                  DatabaseService(uid: Profile.uid)
+                      .toggleGroupJoin(groupId,
+                      Profile.username.toString(),
+                      groupName);
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'เข้าร่วมห้องแชทสำเร็จ',
+                        style: TextStyle(
+                            color: Colors.green),
+                      ),
+                      backgroundColor: Color(0xFF1C243C),
                     ),
-                    backgroundColor: Color(0xFF1C243C),
-                  ),
-                );
-                Future.delayed(
-                    Duration( milliseconds: 500), () {
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(
-                      builder: (context) => MainScreen(
-                        MyCurrentIndex: 3,)));
-                });
-              },
+                  );
+                  Future.delayed(
+                      Duration( milliseconds: 500), () {
+                    Navigator.pushReplacement(
+                        context, MaterialPageRoute(
+                        builder: (context) => MainScreen(
+                          MyCurrentIndex: 3,)));
+                  });
+                },
+              ),
             ),
           );
   }

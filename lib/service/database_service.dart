@@ -93,8 +93,9 @@ class DatabaseService {
     return groupCollection.where("groupName", isEqualTo: groupName).get();
   }
   searchGroupName(String groupName) {
-      return groupCollection.where("groupName", isEqualTo: groupName).get();
-    }
+     // return groupCollection.where("groupName".toString(), isEqualTo: groupName).where("members".toString(),arrayContains: "${Profile.uid}_${Profile.username}",isEqualTo:false ).get();
+    return groupCollection.where("groupName", isEqualTo: groupName).where("members",arrayContains:'${Profile.uid}_${Profile.username}',isEqualTo: false).get();
+  }
   // function -> bool
   Future<bool> isUserJoined(String groupName, String groupId, String userName) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
@@ -108,13 +109,14 @@ class DatabaseService {
     }
   }
 
+
+
   // toggling the group join/exit
   Future toggleGroupJoin(
       String groupId, String userName, String groupName) async {
     // doc reference
     DocumentReference userDocumentReference = userCollection.doc(uid);
     DocumentReference groupDocumentReference = groupCollection.doc(groupId);
-
     DocumentSnapshot documentSnapshot = await userDocumentReference.get();
     List<dynamic> groups = await documentSnapshot['groups'];
 

@@ -107,7 +107,7 @@ class _Screen_chatState extends State<Screen_chat> {
                                     ChatProfile.setChatid(Ima?['groupId']);
                                     ChatProfile.setadmin(Ima?['admin']);
                                     Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => Group_chat(groupId:Ima?['groupId'] , groupName: Ima?['groupName'], userName: Profile.username.toString(),),
+                                      builder: (context) => Group_chat(groupId:Ima?['groupId'] , groupName: Ima?['groupName'], userName: Profile.username.toString()),
                                     ));
                                   },
                                 ),
