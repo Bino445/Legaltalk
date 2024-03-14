@@ -92,11 +92,9 @@ class DatabaseService {
   searchByName(String groupName) {
     return groupCollection.where("groupName", isEqualTo: groupName).get();
   }
-
-  searchGroupName(String groupName) async {
+  searchGroupName(String groupName) {
       return groupCollection.where("groupName", isEqualTo: groupName).get();
-
-  }
+    }
   // function -> bool
   Future<bool> isUserJoined(String groupName, String groupId, String userName) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);

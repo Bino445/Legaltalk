@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:legaltalk/Screen/chat/group_chat.dart';
 import 'package:legaltalk/Screen/screen_main.dart';
 import 'package:legaltalk/model/profile.dart';
 import 'package:legaltalk/service/database_service.dart';
@@ -18,7 +19,13 @@ class _Search_pageState extends State<Search_page> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController search = TextEditingController();
   QuerySnapshot? searchSnapshot;
+  QuerySnapshot? searchSnapshot_loading;
   bool boxsearch = false;
+  @override
+  void setState(VoidCallback fn) {
+    super.initState();
+    searchSnapshot_loading = DatabaseService().searchGroupName(search.text);
+  }
   @override
   /*void _runFilter(String Keyword){
     if(Keyword.isEmpty){
@@ -91,6 +98,14 @@ class _Search_pageState extends State<Search_page> {
         });
       });
     }
+    else{
+      await DatabaseService().searchGroupName(search.text).then((snapshot){
+        setState(() {
+          searchSnapshot = snapshot;
+          boxsearch = false;
+        });
+      });
+    }
   }
   groupList(){
     return boxsearch? ListView.builder(
@@ -104,7 +119,53 @@ class _Search_pageState extends State<Search_page> {
         );
       }
       )
-        : Container();
+        : Container(
+      child: FutureBuilder(
+        future: Firebase_ListGtoupChatNotJoin.getNewsFromFirestore(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else {
+              List<Map<String, dynamic>>? newsList = snapshot.data;
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    color: Colors.white,
+                    child: ListView.builder(
+                      itemCount: newsList?.length,
+                      itemBuilder: (context, index) {
+                        Map<String, dynamic>? Ima = newsList?[index];
+                        return Card(
+                          color: Colors.grey.shade300,
+                          child: ListTile(
+                            title: Text(Ima?['groupName']),
+                            onTap: (){
+                              ChatProfile.setChatid(Ima?['groupId']);
+                              ChatProfile.setadmin(Ima?['admin']);
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => Group_chat(groupId:Ima?['groupId'] , groupName: Ima?['groupName'], userName: Profile.username.toString(),),
+                              ));
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              );
+            }
+          }
+        },
+      ),
+    );
   }
   Widget groupTile( String groupId, String groupName, String admin){
     return ListTile(
@@ -112,7 +173,6 @@ class _Search_pageState extends State<Search_page> {
             trailing: IconButton(
               icon: Text("เข้าร่วม",
                 style: TextStyle(color: Colors.green),),
-              // ไอคอนที่ต้องการใช้
               onPressed: () {
                 ChatProfile.setChatid(groupId);
                 ChatProfile.setadmin(admin);
