@@ -87,15 +87,6 @@ class DatabaseService {
   getGroupMembers(groupId) async {
     return groupCollection.doc(groupId).snapshots();
   }
-
-  // search
-  searchByName(String groupName) {
-    return groupCollection.where("groupName", isEqualTo: groupName).get();
-  }
-  searchGroupName(String groupName) {
-     // return groupCollection.where("groupName".toString(), isEqualTo: groupName).where("members".toString(),arrayContains: "${Profile.uid}_${Profile.username}",isEqualTo:false ).get();
-    return groupCollection.where("groupName", isEqualTo: groupName).where("members",arrayContains:'${Profile.uid}_${Profile.username}',isEqualTo: false).get();
-  }
   // function -> bool
   Future<bool> isUserJoined(String groupName, String groupId, String userName) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
