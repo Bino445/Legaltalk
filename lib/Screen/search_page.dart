@@ -110,7 +110,7 @@ class _Search_pageState extends State<Search_page> {
                                   ),
                                 );
                                 Future.delayed(
-                                    Duration(milliseconds: 500), () {
+                                    Duration(seconds: 1), () {
                                   Navigator.pushReplacement(
                                       context, MaterialPageRoute(
                                       builder: (context) => MainScreen(

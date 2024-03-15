@@ -59,44 +59,44 @@ class _Screen_homeState extends State<Screen_home> {
               highlightColor: Color(0xFFD1B06B),
               onPressed: (){
                 showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: Text("คุณต้องการออกจากระบบหรือไม่"),
-                    actions: [
-                      Container(
-                        margin: EdgeInsets.only(top: 10, right: 20),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Container(
-                              child: TextButton(
-                                onPressed: () {
-                                  Profile.setUsername("");
-                                  Profile.setUid("");
-                                  Navigator.of(context).pop();
-                                  Navigator.pushReplacement(
-                                  context, MaterialPageRoute(
-                                  builder: (context) => Screen_login()));
-                                },
-                                child: Text("ออกจากระบบ"),
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Text("คุณต้องการออกจากระบบหรือไม่"),
+                      actions: [
+                        Container(
+                          margin: EdgeInsets.only(top: 10, right: 20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Container(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Profile.setUsername("");
+                                    Profile.setUid("");
+                                    Navigator.of(context).pop();
+                                    Navigator.pushReplacement(
+                                        context, MaterialPageRoute(
+                                        builder: (context) => Screen_login()));
+                                  },
+                                  child: Text("ออกจากระบบ"),
+                                ),
                               ),
-                            ),
-                            Container(
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("ยกเลิก"),
+                              Container(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("ยกเลิก"),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
+                      ],
+                    );
+                  },
+                );
               },
             ),
             decoration: BoxDecoration(
@@ -190,7 +190,7 @@ class _Screen_homeState extends State<Screen_home> {
                             ),
                             Padding(
                               padding: EdgeInsets.all(12),
-                              child: Image.asset('images/Law_book.png', height: 150),
+                              child: Image.asset('assets/images/Law_book.png', height: 150),
                             )
                           ],
                         ),
@@ -209,12 +209,12 @@ class _Screen_homeState extends State<Screen_home> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              "กระทู้ถามตอบ",
+                              "กระทู้",
                               style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
                             ),
                             Padding(
                               padding: EdgeInsets.all(12),
-                              child: Image.asset('images/Content_management.png', height: 150),
+                              child: Image.asset('assets/images/Content_management.png', height: 150),
                             )
                           ],
                         ),
@@ -243,7 +243,7 @@ class _Screen_homeState extends State<Screen_home> {
                             ),
                             Padding(
                               padding: EdgeInsets.all(12),
-                              child: Image.asset('images/Chatting_online.png', height: 150),
+                              child: Image.asset('assets/images/Chatting_online.png', height: 150),
                             )
                           ],
                         ),
@@ -258,7 +258,7 @@ class _Screen_homeState extends State<Screen_home> {
               child: Row(
                 children: [
                   Text(
-                    "บทความยอดนิยม",
+                    "บทความแนะนำ",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],

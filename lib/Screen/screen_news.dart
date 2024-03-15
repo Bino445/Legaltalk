@@ -31,58 +31,50 @@ class _Screen_News extends State<Screen_News> {
             ),
           ]
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                child: FutureBuilder(
-                  future: FirebaseService.getNewsFromFirestore(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+        child: FutureBuilder(
+          future: FirebaseService.getNewsFromFirestore(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                List<Map<String, dynamic>>? newsList = snapshot.data;
+                return Container(
+                  child: ListView.builder(
+                    itemCount: newsList?.length,
+                    itemBuilder: (context, index) {
+                      Map<String, dynamic>? News = newsList?[index];
+                      return ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ScreenArticle(article: News),
+                            ),
+                          );
+                        },
+                        leading: Image.network(
+                          News?['imageURL'], // ใช้ URL จาก Firestore
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                        title: Text(News?['title']),
                       );
-                    } else {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text('Error: ${snapshot.error}'),
-                        );
-                      } else {
-                        List<Map<String, dynamic>>? newsList = snapshot.data;
-                        return Container(
-                          child: ListView.builder(
-                            itemCount: newsList?.length,
-                            itemBuilder: (context, index) {
-                              Map<String, dynamic>? News = newsList?[index];
-                              return ListTile(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ScreenArticle(article: News),
-                                    ),
-                                  );
-                                },
-                                leading: Image.network(
-                                  News?['imageURL'], // ใช้ URL จาก Firestore
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
-                                title: Text(News?['title']),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                    }
-                  },
-                ),
-              ),
-            ),
-          ],
+                    },
+                  ),
+                );
+              }
+            }
+          },
         ),
       ),
     );

@@ -31,16 +31,16 @@ class _Screen_chatState extends State<Screen_chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-        backgroundColor: Color(0xFF1C243C),
+          backgroundColor: Color(0xFF1C243C),
           //leading: IconButton.outlined(onPressed: (){},
-              //icon: Icon(Icons.search,), color: Colors.white),
+          //icon: Icon(Icons.search,), color: Colors.white),
           actions: [
             Padding(
               padding: EdgeInsets.only(right: 20),
-                child: Text("Group Chat",
-                    style: TextStyle(fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
+              child: Text("Group Chat",
+                  style: TextStyle(fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
             ),
           ]
       ),
@@ -54,8 +54,8 @@ class _Screen_chatState extends State<Screen_chat> {
       ),
       body: Column(
         children: [
-      SizedBox(
-      height: 50,
+          SizedBox(
+            height: 50,
             child: Container(
               margin: EdgeInsets.only(left: 20, right: 20),
               child: Row(
@@ -67,10 +67,10 @@ class _Screen_chatState extends State<Screen_chat> {
                   Spacer(),
                   IconButton(
                       onPressed: ()
-                  {
-                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Search_page()),
-                  );
-                    }, icon: Icon(Icons.search)),
+                      {
+                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Search_page()),
+                        );
+                      }, icon: Icon(Icons.search)),
                 ],
               ),
             ),
@@ -218,9 +218,9 @@ class _Screen_chatState extends State<Screen_chat> {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('สร้างห้องแชทสำเร็จ')));
                           Navigator.of(context).pop();
-                            Navigator.pushReplacement(
-                                context, MaterialPageRoute(
-                                builder: (context) => MainScreen( MyCurrentIndex: 3,)));
+                          Navigator.pushReplacement(
+                              context, MaterialPageRoute(
+                              builder: (context) => MainScreen( MyCurrentIndex: 3,)));
 
                         }
                       },

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:legaltalk/Screen/register.dart';
 import 'package:legaltalk/Screen/screen_main.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:legaltalk/Screen/screen_privacy.dart';
+import '../firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../model/profile.dart';
@@ -32,6 +34,7 @@ class _Screen_loginState extends State<Screen_login> {
   } //password visible
   void checkUsernameAndPassword() async {
     await Firebase.initializeApp();
+
     final firestore = FirebaseFirestore.instance;
     final Users = Username.text;
     final Pass = Password.text;
@@ -43,13 +46,14 @@ class _Screen_loginState extends State<Screen_login> {
       for (var doc in snapshot.docs) {
         if (doc['User'.toString()] == Users && doc['Password'].toString() == Pass) {
           String uid= doc.id;
+          String email = doc['email'];
           Profile.setUid(uid);
           Profile.setUsername(Users);
+          Profile.setEmail(email);
           currentUser = doc['User'.toString()];
           Navigator.pushReplacement(
               context, MaterialPageRoute(
               builder: (context) => MainScreen(MyCurrentIndex: 0,)));
-          break;
         }
         else{
           ScaffoldMessenger.of(context).showSnackBar(
@@ -71,94 +75,92 @@ class _Screen_loginState extends State<Screen_login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFfbfbfb),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  "assets/images/logotext.png",
-                  height: 150.0,
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                "assets/images/logotext.png",
+                height: 150.0,
+              ),
+              SizedBox(height: 20.0),
+              TextFormField(
+                controller: Username,
+                /*validator: (value){
+                  if (value == null || value.isEmpty) {
+                    return 'กรุณากรอกข้อมูล';
+                  }
+                  return null;
+                }*/
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'Username',
                 ),
-                SizedBox(height: 20.0),
-                TextFormField(
-                  controller: Username,
-                  /*validator: (value){
-                    if (value == null || value.isEmpty) {
-                      return 'กรุณากรอกข้อมูล';
-                    }
-                    return null;
-                  }*/
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: 'Username',
-                  ),
-                ),
-                TextFormField(
-                  obscureText: passwordVisible,
-                  controller: Password,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                        icon: Icon(passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                        onPressed: () {
-                          setState(() {
-                            passwordVisible = !passwordVisible;
-                          });
-                        }
-                    ),
-        
-                  ),
-                ),
-                Padding(padding: const EdgeInsets.only(top: 20)),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ScreenRegister(),
-                      ),
-                    );
-                  },
-                  child: Hero(
-                    tag: 'hero',
-                    child: Text(
-                      "ยังไม่ได้เป็นสมาชิกใช่ไหม? สมัครเลยตอนนี้",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                Padding(padding: const EdgeInsets.only(top: 20)),
-                SizedBox(
-                  child: ElevatedButton.icon(
+              ),
+              TextFormField(
+                obscureText: passwordVisible,
+                controller: Password,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                      icon: Icon(passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off),
                       onPressed: () {
-                        checkUsernameAndPassword();
-                  },
-                    style: ElevatedButton.styleFrom(
-                        //primary: Color(0xFFD1B06B), //background color of button
-                        elevation: 3, //elevation of button
-                        shape: RoundedRectangleBorder( //to set border radius to button
-                            borderRadius: BorderRadius.circular(50)
-                        ),
-                        padding: EdgeInsets.all(20) //content padding inside button
+                        setState(() {
+                          passwordVisible = !passwordVisible;
+                        });
+                      }
+                  ),
+
+                ),
+              ),
+              Padding(padding: const EdgeInsets.only(top: 20)),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ScreenRegister(),
                     ),
-                      icon: Icon(Icons.login, color: Colors.white,),
-                      label: Text(
-                          "เข้าสู่ระบบ",
-                          style: TextStyle(fontSize: 20,
-                            color: Colors.white,
-        
-                          ),
-                      ),
+                  );
+                },
+                child: Hero(
+                  tag: 'hero',
+                  child: Text(
+                    "ยังไม่ได้เป็นสมาชิกใช่ไหม? สมัครเลยตอนนี้",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-              ],
-            ),
+              ),
+              Padding(padding: const EdgeInsets.only(top: 20)),
+              SizedBox(
+                child: ElevatedButton.icon(
+                    onPressed: () {
+                      checkUsernameAndPassword();
+                },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFD1B06B), //background color of button
+                      elevation: 3, //elevation of button
+                      shape: RoundedRectangleBorder( //to set border radius to button
+                          borderRadius: BorderRadius.circular(50)
+                      ),
+                      padding: EdgeInsets.all(20) //content padding inside button
+                  ),
+                    icon: Icon(Icons.login, color: Colors.white,),
+                    label: Text(
+                        "เข้าสู่ระบบ",
+                        style: TextStyle(fontSize: 20,
+                          color: Colors.white,
+
+                        ),
+                    ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

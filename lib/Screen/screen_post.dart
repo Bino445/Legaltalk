@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:legaltalk/like_button.dart';
 import 'package:legaltalk/Screen/screen_add_post.dart';
 import 'package:legaltalk/Screen/screen_see_post.dart';
+import 'package:legaltalk/update_like.dart';
+import '../model/profile.dart';
 import '../service/firebase_blog.dart';
 
 class Screen_Posts extends StatefulWidget {
-  const Screen_Posts({super.key});
+
+  const Screen_Posts({super.key,});
 
   @override
   State<Screen_Posts> createState() => _Screen_PostsState();
@@ -17,6 +21,35 @@ class _Screen_PostsState extends State<Screen_Posts> {
   final TextEditingController title = TextEditingController();
   final TextEditingController descrip = TextEditingController();
 
+//user
+ /* final currentUser = Profile.uid;
+  bool isLiked = false;
+  bool real = like().CheckLike(Profile.username.toString()) as bool;
+  @override
+  void initState() {
+    super.initState();
+    isLiked = real;
+  }
+
+  //toggle
+  toggleLike(String post){
+    setState(() {
+      isLiked = !isLiked;
+    });
+
+    //firebase
+    DocumentReference postRef = FirebaseFirestore.instance.collection('blog').doc(post);
+
+    if (isLiked){
+      postRef.update({
+        'Likes': FieldValue.arrayUnion([Profile.username])
+      });
+    } else {
+      postRef.update({
+        'Likes': FieldValue.arrayRemove([Profile.username])
+      });
+    }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +65,7 @@ class _Screen_PostsState extends State<Screen_Posts> {
         ),]
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10.0),
         child: FutureBuilder(
           future: Firebase_Blog.getblogFromFirestore(),
           builder: (context, snapshot) {
@@ -49,6 +82,7 @@ class _Screen_PostsState extends State<Screen_Posts> {
                 List<Map<String, dynamic>>? blogList = snapshot.data;
                 return Container(
                   child: ListView.builder(
+                    //ikes: List<String>.from(blog)
                     itemCount: blogList?.length,
                     itemBuilder: (context, index) {
                       Map<String, dynamic>? blog = blogList?[index];
@@ -59,7 +93,7 @@ class _Screen_PostsState extends State<Screen_Posts> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Screen_SeePost(seepost: blog),
+                                builder: (context) => Screen_SeePost(seepost: blog,),
                               ),
                             );
                           },
@@ -73,6 +107,13 @@ class _Screen_PostsState extends State<Screen_Posts> {
                           subtitle: Text(
                               blog?['authorName']),
                           trailing: Icon(Icons.arrow_forward_ios_rounded),
+                          /*Column(
+                            children: [
+                              LikeButton(
+                                  isLiked: isLiked,
+                                  onTap: toggleLike(blog?['postId']))
+                            ],
+                          ),*/
                         ),
                       );
                     },
@@ -83,23 +124,15 @@ class _Screen_PostsState extends State<Screen_Posts> {
           },
         ),
       ),
-      floatingActionButton: Container(
-        //decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
-        alignment: Alignment.bottomCenter,
-        padding: EdgeInsets.symmetric(vertical: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+      floatingActionButton:
             FloatingActionButton(
               child: Icon(Icons.post_add_rounded),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Screen_Add_Blog()));
               },
+              elevation: 0,
               backgroundColor: Color(0xFFD1B06B),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

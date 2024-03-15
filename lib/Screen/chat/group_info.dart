@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:legaltalk/Screen/chat/group_chat.dart';
 import 'package:legaltalk/Screen/screen_main.dart';
 import 'package:legaltalk/model/profile.dart';
 
@@ -75,8 +76,8 @@ class _GroupInfoState extends State<GroupInfo> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Text("Group Info"),
+        backgroundColor: Color(0xFF1C243C),
+        title: const Text("ข้อมูลห้องแชท", style: TextStyle(color: Colors.white),),
         actions: [
           IconButton(
               onPressed: () {
@@ -85,9 +86,9 @@ class _GroupInfoState extends State<GroupInfo> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text("Exit"),
+                        title: const Text("Leave group?"),
                         content:
-                            const Text("Are you sure you exit the group? "),
+                            const Text("Are you sure you leave the group? "),
                         actions: [
                           IconButton(
                             onPressed: () {
@@ -128,7 +129,7 @@ class _GroupInfoState extends State<GroupInfo> {
                       );
                     });
               },
-              icon: const Icon(Icons.exit_to_app))
+              icon: const Icon(Icons.exit_to_app), color: Colors.white,)
         ],
       ),
       body: SingleChildScrollView(
@@ -139,13 +140,13 @@ class _GroupInfoState extends State<GroupInfo> {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: Theme.of(context).primaryColor.withOpacity(0.2)),
+                  color: Colors.grey.shade300),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Color(0xFFD1B06B),
                     child: Text(
                       widget.groupName.substring(0, 1).toUpperCase(),
                       style: const TextStyle(
@@ -199,7 +200,7 @@ class _GroupInfoState extends State<GroupInfo> {
                     child: ListTile(
                       leading: CircleAvatar(
                         radius: 30,
-                        backgroundColor: Theme.of(context).primaryColor,
+                        backgroundColor: Colors.grey.shade300,
                         child: Text(
                           getName(snapshot.data['members'][index])
                               .substring(0, 1)

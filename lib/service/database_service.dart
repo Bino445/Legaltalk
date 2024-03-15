@@ -22,27 +22,24 @@ class DatabaseService {
       "Password":pass,
       "groups": [],
       "uid": uid,
+      "imageLink": ""
     });
   }
 
   // getting user data
-    Future<bool> CheckUser(String username) async {
+  Future<bool> CheckUser(String username) async {
     QuerySnapshot snapshot =
     await userCollection.where("User", isEqualTo: username).get();
     if (snapshot.docs.isEmpty)
     {
-    return true;
-}
+      return true;
+    }
     else{
       return false;
     }
     //return snapshot;
   }
 
-  // get user groups
-  getUserGroups() async {
-    return userCollection.doc(uid).snapshots();
-  }
 
   // creating a group
   Future createGroup(String userName, String id, String groupName) async {
@@ -75,6 +72,21 @@ class DatabaseService {
         .collection("messages")
         .orderBy("time")
         .snapshots();
+  }
+  Future<void> updateUser(String userName, String uid,email) async {
+    // ดึง DocumentReference ของเอกสารผู้ใช้โดยใช้ uid
+    DocumentReference userDocumentReference = userCollection.doc(uid);
+
+    try {
+      // อัปเดตข้อมูลใน Firestore
+      await userDocumentReference.update({
+        "User": userName,
+        "email": email,
+      });
+      print("User data updated successfully!");
+    } catch (e) {
+      print("Error updating user data: $e");
+    }
   }
 
   Future getGroupAdmin(String groupId) async {

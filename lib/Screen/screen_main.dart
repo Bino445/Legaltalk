@@ -3,6 +3,7 @@ import 'package:legaltalk/Screen/screen_chat.dart';
 import 'package:legaltalk/Screen/screen_home.dart';
 import 'package:legaltalk/Screen/screen_news.dart';
 import 'package:legaltalk/Screen/screen_post.dart';
+import 'package:legaltalk/model/profile.dart';
 
 
 

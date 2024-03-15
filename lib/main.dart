@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:legaltalk/Screen/screen_add_post.dart';
 import 'package:legaltalk/Screen/screen_login.dart';
 import 'package:legaltalk/Screen/screen_post.dart';
+import 'package:legaltalk/Screen/screen_splash.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF1C243C)),
         useMaterial3: true,
       ),
-      home: Screen_login(),
+      home: ScreenSplash(),
     );
   }
 }
