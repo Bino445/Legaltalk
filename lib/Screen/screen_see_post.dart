@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:legaltalk/like_button.dart';
+import 'package:legaltalk/model/profile.dart';
 
 class Screen_SeePost extends StatelessWidget {
   final Map<String, dynamic>? seepost;
@@ -11,13 +13,13 @@ class Screen_SeePost extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         shadowColor: Colors.black,
-        title: Center(
-          child: Image.asset("assets/images/logotext.png",
+        title: Image.asset("assets/images/logotext.png",
             width: 80,
             height: 80,
           ),
-        ),
+
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -25,7 +27,7 @@ class Screen_SeePost extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(padding: EdgeInsets.only(top: 8)),
+              Padding(padding: EdgeInsets.only(top: 20)),
               Center(
                 child: Text(
                   seepost?['title'] ?? '',
@@ -61,7 +63,7 @@ class Screen_SeePost extends StatelessWidget {
               ),*/
               SizedBox(height: 10),
                 Container(
-                  margin: EdgeInsets.only(left: 20,right: 20),
+                  margin: EdgeInsets.only(left: 10,right: 10),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(
@@ -73,6 +75,7 @@ class Screen_SeePost extends StatelessWidget {
                       ),
                     ),
                 ),
+
             ],
           ),
         ),

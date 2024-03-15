@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:legaltalk/Screen/screen_account.dart';
+import 'package:legaltalk/Screen/screen_login.dart';
 import 'package:legaltalk/Screen/screen_main.dart';
 import 'package:legaltalk/Screen/screen_news.dart';
 import 'package:legaltalk/Screen/screen_see_post.dart';
@@ -46,7 +47,64 @@ class _Screen_homeState extends State<Screen_home> {
               borderRadius: BorderRadius.circular(50),
             ),
           ),
+          Container(
+            width: 50,
+            height: 50,
+            alignment: Alignment.center,
+            child: IconButton(
+              icon: Icon(Icons.logout),
+              color: Colors.black,
+              iconSize: 30,
+              hoverColor: Color(0xFFD1B06B),
+              highlightColor: Color(0xFFD1B06B),
+              onPressed: (){
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Text("คุณต้องการออกจากระบบหรือไม่"),
+                      actions: [
+                        Container(
+                          margin: EdgeInsets.only(top: 10, right: 20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Container(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Profile.setUsername("");
+                                    Profile.setUid("");
+                                    Navigator.of(context).pop();
+                                    Navigator.pushReplacement(
+                                        context, MaterialPageRoute(
+                                        builder: (context) => Screen_login()));
+                                  },
+                                  child: Text("ออกจากระบบ"),
+                                ),
+                              ),
+                              Container(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("ยกเลิก"),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+            ),
+          ),
         ],
+
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -72,7 +130,7 @@ class _Screen_homeState extends State<Screen_home> {
                 ),
               ),
             ),//ตัวหนังสือ "มีอะไรให้ช่วยไหม?"
-            Container(
+            /*Container(
               margin: EdgeInsets.only(top: 10, left: 20, right: 20),
               decoration: BoxDecoration(
                 boxShadow: [
@@ -99,7 +157,7 @@ class _Screen_homeState extends State<Screen_home> {
                   ),
                 ],
               ),
-            ),//ช่องค้นหา
+            ),//ช่องค้นหา*/
             Container(
               margin: EdgeInsets.only(top: 30, left: 20, right: 20),
               child: Row(
@@ -132,7 +190,7 @@ class _Screen_homeState extends State<Screen_home> {
                             ),
                             Padding(
                               padding: EdgeInsets.all(12),
-                              child: Image.asset('images/Law_book.png', height: 150),
+                              child: Image.asset('assets/images/Law_book.png', height: 150),
                             )
                           ],
                         ),
@@ -151,12 +209,12 @@ class _Screen_homeState extends State<Screen_home> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              "กระทู้ถามตอบ",
+                              "กระทู้",
                               style: TextStyle(color: Color(0xFFFBFBFB), fontSize: 20),
                             ),
                             Padding(
                               padding: EdgeInsets.all(12),
-                              child: Image.asset('images/Content_management.png', height: 150),
+                              child: Image.asset('assets/images/Content_management.png', height: 150),
                             )
                           ],
                         ),
@@ -185,7 +243,7 @@ class _Screen_homeState extends State<Screen_home> {
                             ),
                             Padding(
                               padding: EdgeInsets.all(12),
-                              child: Image.asset('images/Chatting_online.png', height: 150),
+                              child: Image.asset('assets/images/Chatting_online.png', height: 150),
                             )
                           ],
                         ),
@@ -200,7 +258,7 @@ class _Screen_homeState extends State<Screen_home> {
               child: Row(
                 children: [
                   Text(
-                    "บทความยอดนิยม",
+                    "บทความแนะนำ",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],

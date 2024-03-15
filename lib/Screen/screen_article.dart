@@ -11,7 +11,12 @@ class ScreenArticle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(article?['title'] ?? ''),
+        centerTitle: true,
+        shadowColor: Colors.black,
+        title: Image.asset("assets/images/logotext.png",
+          width: 80,
+          height: 80,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -41,7 +46,7 @@ class ScreenArticle extends StatelessWidget {
                   article?['content'] ?? '',
 
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 14,
                   ),
                 ),
               ),

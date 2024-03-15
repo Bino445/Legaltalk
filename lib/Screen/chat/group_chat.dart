@@ -52,6 +52,9 @@ class _Group_chatState extends State<Group_chat> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () {
+          /*Navigator.pushReplacement(
+              context, MaterialPageRoute(
+              builder: (context) => MainScreen(MyCurrentIndex: 3,)));*/
           Navigator.pop(context);
           }, icon: Icon(Icons.arrow_back_ios_new_rounded),color: Colors.white,),
         centerTitle: true,

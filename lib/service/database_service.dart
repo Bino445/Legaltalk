@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:legaltalk/model/profile.dart';
 
 class DatabaseService {
   final String? uid;
@@ -25,10 +26,17 @@ class DatabaseService {
   }
 
   // getting user data
-  Future gettingUserData(String username) async {
+  Future<bool> CheckUser(String username) async {
     QuerySnapshot snapshot =
     await userCollection.where("User", isEqualTo: username).get();
-    return snapshot;
+    if (snapshot.docs.isEmpty)
+    {
+      return true;
+    }
+    else{
+      return false;
+    }
+    //return snapshot;
   }
 
   // get user groups
@@ -79,12 +87,6 @@ class DatabaseService {
   getGroupMembers(groupId) async {
     return groupCollection.doc(groupId).snapshots();
   }
-
-  // search
-  searchByName(String groupName) {
-    return groupCollection.where("groupName", isEqualTo: groupName).get();
-  }
-
   // function -> bool
   Future<bool> isUserJoined(String groupName, String groupId, String userName) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
@@ -98,13 +100,14 @@ class DatabaseService {
     }
   }
 
+
+
   // toggling the group join/exit
   Future toggleGroupJoin(
       String groupId, String userName, String groupName) async {
     // doc reference
     DocumentReference userDocumentReference = userCollection.doc(uid);
     DocumentReference groupDocumentReference = groupCollection.doc(groupId);
-
     DocumentSnapshot documentSnapshot = await userDocumentReference.get();
     List<dynamic> groups = await documentSnapshot['groups'];
 
